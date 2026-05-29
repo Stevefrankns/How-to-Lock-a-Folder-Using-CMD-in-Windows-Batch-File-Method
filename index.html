@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<!-- Replace YOUR-DOMAIN.com before launch -->
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>How to Lock a Folder Using CMD in Windows (Batch File Method)</title>
+<meta content="Learn how to lock a folder using CMD in Windows. Get the exact batch file code, step-by-step terminal instructions, and troubleshooting tips." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700;800&amp;family=Open+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
+
+:root {
+    --navy: #1B2845;
+    --purple: #6C3EBF;
+    --teal: #00C9A7;
+    --lavender: #F7F3FF;
+    --mint: #E8F8F5;
+    --cream: #FFF8EE;
+    --white: #FFFFFF;
+    --text-dark: #E8EAED;
+    --text-light: #1B2845;
+    --muted-dark: rgba(232,234,237,.78);
+    --muted-light: rgba(27,40,69,.72);
+    --surface-dark: #14213A;
+    --surface-deep: #101D33;
+    --border-light: rgba(27,40,69,.14);
+    --border-dark: rgba(255,255,255,.16);
+    --font-heading: 'Raleway', sans-serif;
+    --font-body: 'Open Sans', sans-serif;
+    --max-reading-width: 820px;
+    --max-wide-width: 1160px;
+    --section-padding-v: 92px;
+    --radius-card: 24px;
+    --radius-pill: 999px;
+    --shadow-card: 0 24px 70px rgba(27,40,69,.14);
+    --shadow-dark: 0 28px 90px rgba(0,0,0,.35);
+    --transition-speed: .28s;
+}
+
+/* Reset & Base */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: var(--font-body);
+    color: var(--text-light);
+    background: var(--white);
+    line-height: 1.75;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    color: inherit;
+    line-height: 1.06;
+    margin-bottom: 1rem;
+    letter-spacing: -0.035em;
+}
+h1 { font-size: clamp(40px, 7vw, 64px); font-weight: 800; max-width: 980px; }
+h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 800; margin-top: 0; }
+h3 { font-size: clamp(22px, 2.6vw, 28px); font-weight: 700; margin-top: 1.6rem; }
+h4 { font-size: 16px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+p { margin-bottom: 1.25rem; }
+a {
+    color: var(--purple);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color var(--transition-speed), opacity var(--transition-speed), border-color var(--transition-speed);
+}
+a:hover { color: #4f2c94; }
+ul, ol { margin-bottom: 1.25rem; padding-left: 1.5rem; }
+li { margin-bottom: .58rem; }
+code {
+    background: rgba(108,62,191,.12);
+    color: inherit;
+    border: 1px solid rgba(108,62,191,.16);
+    padding: .08em .38em;
+    border-radius: 8px;
+    font-size: .92em;
+}
+
+/* Layout */
+.container {
+    max-width: var(--max-reading-width);
+    margin: 0 auto;
+    padding: 0 24px;
+}
+.container-wide {
+    max-width: var(--max-wide-width);
+    margin: 0 auto;
+    padding: 0 24px;
+}
+section, article.section-block { padding: var(--section-padding-v) 0; }
+.section-block {
+    position: relative;
+    isolation: isolate;
+}
+.theme-dark {
+    color: var(--text-dark);
+}
+.theme-dark h1, .theme-dark h2, .theme-dark h3, .theme-dark h4 { color: var(--white); }
+.theme-dark p, .theme-dark li { color: var(--muted-dark); }
+.theme-dark a:not(.btn):not(.saas-btn-primary):not(.saas-btn-secondary) { color: #8ff5e1; }
+.theme-light { color: var(--text-light); }
+.theme-light p, .theme-light li { color: var(--muted-light); }
+.section-hero { background: radial-gradient(circle at 82% 18%, rgba(108,62,191,.42), transparent 34%), linear-gradient(135deg, #111D35 0%, var(--navy) 48%, #0D1527 100%); }
+.section-lavender { background: var(--lavender); }
+.section-white { background: var(--white); }
+.section-mint { background: var(--mint); }
+.section-cream { background: var(--cream); }
+.section-navy { background: radial-gradient(circle at 18% 0%, rgba(0,201,167,.20), transparent 36%), var(--navy); }
+.section-purple { background: radial-gradient(circle at 78% 20%, rgba(0,201,167,.28), transparent 36%), linear-gradient(135deg, #6C3EBF, #4C2496); }
+.bg-alt { background: inherit; }
+
+/* Header / Nav */
+.site-header {
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,.82);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(27,40,69,.12);
+    z-index: 1000;
+    min-height: 74px;
+    display: flex;
+    align-items: center;
+    transition: background var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+.site-header.over-dark {
+    background: rgba(27,40,69,.72);
+    border-color: rgba(255,255,255,.14);
+    box-shadow: 0 20px 60px rgba(0,0,0,.18);
+}
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: var(--max-wide-width);
+    margin: 0 auto;
+    padding: 0 24px;
+    gap: 24px;
+}
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-light);
+    font-family: var(--font-heading);
+    font-weight: 800;
+    letter-spacing: -.02em;
+    white-space: nowrap;
+}
+.brand:hover { color: var(--text-light); }
+.site-header.over-dark .brand,
+.site-header.over-dark .nav-links a,
+.site-header.over-dark .hamburger { color: var(--white); }
+.brand-mark {
+    width: 42px;
+    height: 42px;
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 42px;
+    border-radius: 15px;
+    background: rgba(255,255,255,.10);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.12), 0 10px 28px rgba(0,0,0,.16);
+}
+.brand-mark svg { width: 34px; height: 34px; display: block; }
+.brand-title {
+    font-size: 18px;
+    word-spacing: .14em;
+}
+.nav-links {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+}
+.nav-links a {
+    font-size: 13px;
+    color: var(--text-light);
+    position: relative;
+    letter-spacing: .02em;
+}
+.nav-links a:hover { color: var(--purple); }
+.site-header.over-dark .nav-links a:hover { color: var(--teal); }
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    border-radius: 99px;
+    background: var(--teal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-speed);
+}
+.nav-links a:hover::after,
+.nav-links a.active::after { transform: scaleX(1); }
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 27px;
+    cursor: pointer;
+    color: var(--text-light);
+}
+
+/* Buttons and labels */
+.btn, .btn-outline, .saas-btn-primary, .saas-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-pill);
+    font-weight: 800;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed), background var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed);
+}
+.btn, .btn-outline { padding: 13px 24px; }
+.btn:hover, .btn-outline:hover, .saas-btn-primary:hover, .saas-btn-secondary:hover {
+    transform: translateY(-2px);
+}
+.btn-primary-pill,
+.btn {
+    background: var(--teal);
+    color: #08201D !important;
+    border: 2px solid var(--teal);
+    box-shadow: 0 14px 38px rgba(0,201,167,.26);
+}
+.btn-primary-pill:hover,
+.btn:hover { color: #08201D !important; box-shadow: 0 18px 46px rgba(0,201,167,.34); }
+.btn-secondary-pill,
+.btn-outline {
+    background: rgba(255,255,255,.08);
+    color: var(--white) !important;
+    border: 2px solid rgba(255,255,255,.68);
+}
+.theme-light .btn-outline {
+    color: var(--text-light) !important;
+    border-color: rgba(27,40,69,.24);
+    background: var(--white);
+}
+.btn-secondary-pill:hover,
+.btn-outline:hover { border-color: var(--teal); background: rgba(0,201,167,.13); }
+.label-badge,
+.section-badge,
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--purple);
+    margin-bottom: 14px;
+}
+.theme-dark .label-badge,
+.theme-dark .section-badge,
+.hero-eyebrow { color: var(--teal); }
+.label-badge::before,
+.section-badge::before,
+.hero-eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 3px;
+    border-radius: 99px;
+    margin-right: 10px;
+    background: currentColor;
+}
+
+/* Hero */
+.hero-article {
+    max-width: none;
+    padding-top: 96px !important;
+    padding-bottom: 86px !important;
+}
+.hero-article > * {
+    max-width: var(--max-reading-width);
+    margin-left: auto;
+    margin-right: auto;
+}
+.breadcrumb {
+    font-size: 13px;
+    color: rgba(232,234,237,.72);
+    margin-bottom: 24px;
+    letter-spacing: .03em;
+}
+.hero-article h1 {
+    color: var(--white);
+    text-wrap: balance;
+}
+.hero-article > p:first-of-type {
+    font-size: 1.15rem !important;
+    color: rgba(232,234,237,.82) !important;
+    max-width: 760px !important;
+}
+.hero-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 30px auto 20px;
+}
+.hero-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 auto 30px;
+}
+.hero-chip-row span {
+    display: inline-flex;
+    padding: 9px 14px;
+    border-radius: var(--radius-pill);
+    color: var(--white);
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18);
+    font-size: 13px;
+    font-weight: 700;
+}
+.meta-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 14px;
+    color: rgba(232,234,237,.72);
+    border-top: 1px solid rgba(255,255,255,.16);
+    border-bottom: 1px solid rgba(255,255,255,.16);
+    padding: 14px 0;
+    margin: 26px auto 32px;
+}
+.meta-bar strong { color: var(--white); }
+.quick-answer {
+    background: var(--white);
+    color: var(--text-light);
+    border-left: 0;
+    padding: 28px;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-dark);
+    margin-bottom: 32px;
+}
+.quick-answer p {
+    color: var(--text-light) !important;
+    margin: 0;
+}
+.quick-answer .label-badge { color: var(--purple); }
+
+/* TOC */
+.toc-card {
+    background: rgba(255,255,255,.09);
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: var(--radius-card);
+    padding: 26px;
+    margin-bottom: 0;
+    box-shadow: var(--shadow-dark);
+}
+.toc-card h3 {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    text-transform: uppercase;
+    margin-top: 0;
+    color: var(--teal);
+    letter-spacing: 3px;
+}
+.toc-list { list-style: none; padding: 0; margin-bottom: 0; }
+.toc-list li { margin-bottom: 10px; }
+.toc-list a {
+    color: var(--white) !important;
+    display: block;
+    border-bottom: 1px solid rgba(255,255,255,.13);
+    padding-bottom: 8px;
+    font-weight: 700;
+}
+.toc-list a:hover { color: var(--teal) !important; }
+
+/* Wave divider */
+.wave-divider {
+    height: 64px;
+    margin: -1px 0;
+    line-height: 0;
+    overflow: hidden;
+    background: transparent;
+}
+.wave-divider svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.wave-divider path { fill: var(--white); }
+.wave-lavender path { fill: var(--lavender); }
+.wave-mint path { fill: var(--mint); }
+.wave-cream path { fill: var(--cream); }
+.wave-navy path { fill: var(--navy); }
+.wave-purple path { fill: var(--purple); }
+.wave-white path { fill: var(--white); }
+
+/* Images */
+.extra-image-card {
+    margin: 28px 0;
+    border-radius: 28px;
+    overflow: hidden;
+    background: rgba(255,255,255,.70);
+    border: 1px solid rgba(27,40,69,.12);
+    box-shadow: var(--shadow-card);
+    padding: 14px;
+}
+.theme-dark .extra-image-card {
+    background: rgba(255,255,255,.08);
+    border-color: rgba(255,255,255,.14);
+    box-shadow: var(--shadow-dark);
+}
+.extra-image-card img {
+    width: 100%;
+    height: auto;
+    max-height: 430px;
+    object-fit: contain;
+    display: block;
+    border-radius: 18px;
+}
+.hero-visual {
+    max-width: 900px;
+    margin-top: 34px;
+}
+.hero-visual img { max-height: 390px; }
+.compact-product img { max-height: 260px; }
+.wide-image img { max-height: 380px; }
+
+/* Cards, grids, colorblock surfaces */
+.z-pattern-row {
+    display: flex;
+    gap: 44px;
+    align-items: center;
+    margin: 54px 0;
+}
+.z-pattern-row:nth-child(even) { flex-direction: row-reverse; }
+.z-text { flex: 1; }
+.z-visual {
+    flex: 1;
+    background: var(--white) !important;
+    border-radius: var(--radius-card);
+    padding: 30px;
+    border: 1px solid var(--border-light) !important;
+    box-shadow: var(--shadow-card);
+    color: var(--text-light);
+}
+.z-visual h3, .z-visual p, .z-visual li { color: var(--text-light); }
+.callout,
+.quick-answer,
+.z-visual,
+.masonry-card,
+.comp-table,
+.toc-card,
+.pricing-card {
+    position: relative;
+}
+.callout {
+    background: var(--white);
+    padding: 24px;
+    border-radius: 22px;
+    border-left: 5px solid var(--purple);
+    margin: 24px 0;
+    color: var(--text-light);
+    box-shadow: 0 16px 44px rgba(27,40,69,.08);
+}
+.callout-warning {
+    background: #fff3f3 !important;
+    border-left-color: #d32f2f !important;
+}
+
+/* Code Blocks */
+.code-container {
+    position: relative;
+    background: #07101F;
+    border-radius: 24px;
+    padding: 54px 24px 24px;
+    margin: 26px 0;
+    overflow-x: auto;
+    border: 1px solid rgba(255,255,255,.12);
+    box-shadow: 0 26px 70px rgba(7,16,31,.30);
+}
+.code-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #101D33;
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 24px 24px 0 0;
+    border-bottom: 1px solid rgba(255,255,255,.10);
+}
+.code-lang { color: var(--teal); font-size: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-weight: 700; }
+.copy-btn {
+    background: rgba(0,201,167,.14);
+    border: 1px solid rgba(0,201,167,.32);
+    color: #B9FFF1;
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background .2s;
+}
+.copy-btn:hover { background: rgba(0,201,167,.24); }
+.code-container pre {
+    margin: 0;
+    color: #E8EAED;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+/* Interactive step tabs */
+.step-tabs-shell {
+    margin: 30px 0 40px;
+}
+.step-tab-list {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0,1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.step-tab {
+    border: 1px solid rgba(108,62,191,.20);
+    background: var(--white);
+    color: var(--text-light);
+    border-radius: 18px;
+    padding: 14px 12px;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+    transition: transform var(--transition-speed), background var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
+}
+.step-tab:hover { transform: translateY(-2px); border-color: var(--purple); }
+.step-tab.active {
+    background: var(--purple);
+    color: var(--white);
+    border-color: var(--purple);
+}
+.step-panel {
+    display: none;
+    background: var(--white);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-card);
+    padding: 28px;
+}
+.step-panel.active { display: block; }
+.step-panel h3:first-child { margin-top: 0; }
+
+/* Masonry features */
+.masonry-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin: 40px 0;
+}
+.masonry-card {
+    background: var(--white);
+    padding: 30px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+.masonry-card::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 4px;
+    background: var(--teal);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform var(--transition-speed);
+}
+.masonry-card:hover::after { transform: scaleY(1); }
+.masonry-card:hover { transform: translateY(-4px); }
+.theme-dark .masonry-card {
+    background: var(--surface-dark);
+    border-color: var(--border-dark);
+    border-top: 4px solid var(--teal);
+    box-shadow: var(--shadow-dark);
+}
+.theme-dark .masonry-card h3,
+.theme-dark .masonry-card p { color: var(--white); }
+.masonry-card:nth-child(even) { transform: translateY(18px); }
+.masonry-card:nth-child(even):hover { transform: translateY(10px); }
+
+/* Comparison table */
+.comp-table-wrapper { overflow-x: auto; margin: 40px 0; border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
+.comp-table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+}
+.comp-table th, .comp-table td {
+    padding: 17px 20px;
+    text-align: left;
+    border-bottom: 1px solid rgba(27,40,69,.10);
+}
+.comp-table th {
+    background: var(--navy);
+    color: var(--white);
+    font-weight: 800;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+.comp-table tr.highlight-row {
+    border-left: 5px solid var(--purple);
+    background: #f6f1ff;
+}
+
+/* FAQ */
+.faq-group { margin-bottom: 34px; }
+.faq-group h3 {
+    border-bottom: 2px solid rgba(108,62,191,.18);
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+}
+.accordion-item {
+    border: 1px solid rgba(27,40,69,.10);
+    border-radius: 18px;
+    background: var(--white);
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 34px rgba(27,40,69,.06);
+}
+.accordion-btn {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 20px 22px;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: var(--font-body);
+    color: var(--text-light);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+}
+.accordion-btn span {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(108,62,191,.10);
+    color: var(--purple);
+    flex: 0 0 30px;
+}
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .32s ease;
+}
+.accordion-inner {
+    padding: 0 22px 20px;
+    color: var(--muted-light);
+}
+
+/* Premium SaaS / pricing band */
+.section-pricing {
+    text-align: center;
+    margin: 0;
+}
+.section-pricing h2 { font-size: clamp(34px, 5vw, 54px); }
+.section-pricing p {
+    max-width: 690px;
+    margin: 0 auto 28px;
+    font-size: 18px;
+}
+.saas-dashboard {
+    background: linear-gradient(145deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 28px;
+    padding: 34px;
+    max-width: 820px;
+    margin: 34px auto;
+    box-shadow: var(--shadow-dark);
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.saas-chip {
+    background: rgba(255,255,255,.08);
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+    border: 1px solid rgba(255,255,255,.12);
+    color: var(--white);
+}
+.product-visual-grid {
+    max-width: 900px;
+    margin: 20px auto 28px;
+    display: grid;
+    grid-template-columns: minmax(120px, 220px) 1fr;
+    gap: 22px;
+    align-items: center;
+}
+.product-visual-grid .extra-image-card { margin: 0; height: 100%; display: grid; place-items: center; }
+.product-visual-grid img { max-height: 310px; }
+.pricing-toggle-panel {
+    max-width: 820px;
+    margin: 34px auto;
+}
+.billing-toggle {
+    display: inline-flex;
+    padding: 6px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.14);
+    margin-bottom: 18px;
+}
+.billing-option {
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--white);
+    padding: 10px 18px;
+    font-weight: 800;
+    cursor: pointer;
+}
+.billing-option.active {
+    background: var(--teal);
+    color: #08201D;
+}
+.pricing-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 18px;
+}
+.pricing-card {
+    text-align: left;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 26px;
+    padding: 24px;
+}
+.pricing-card.recommended {
+    background: var(--purple);
+    color: var(--white);
+    box-shadow: 0 24px 70px rgba(108,62,191,.32);
+}
+.pricing-label,
+.pricing-note {
+    display: block;
+    color: rgba(255,255,255,.76);
+    font-weight: 700;
+}
+.pricing-label {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+.pricing-value {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: clamp(34px, 5vw, 50px);
+    line-height: 1;
+    color: var(--white);
+    margin: 16px 0 12px;
+}
+.saas-cta-group {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.saas-btn-primary,
+.saas-btn-secondary {
+    padding: 14px 25px;
+}
+.saas-btn-primary {
+    background: var(--teal);
+    color: #08201D !important;
+}
+.saas-btn-secondary {
+    border: 2px solid rgba(255,255,255,.60);
+    color: var(--white) !important;
+}
+
+/* Footer */
+.site-footer {
+    background: #0D1527;
+    color: var(--white);
+    padding: 82px 0 40px;
+    margin-top: 0;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 42px;
+    margin-bottom: 42px;
+}
+.footer-brand {
+    color: var(--white);
+    margin-bottom: 16px;
+}
+.footer-brand .brand-title { font-size: 19px; }
+.footer-grid h4 {
+    color: var(--white);
+    font-family: var(--font-heading);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+.footer-links { list-style: none; padding: 0; }
+.footer-links a {
+    color: rgba(232,234,237,.72);
+    font-size: 14px;
+}
+.footer-links a:hover { color: var(--teal); }
+.footer-disclosure {
+    border-top: 1px solid rgba(255,255,255,.12);
+    padding-top: 24px;
+    font-size: 13px;
+    color: rgba(232,234,237,.62);
+}
+.footer-disclosure p { color: rgba(232,234,237,.62); }
+
+/* Section indicator */
+.section-indicator {
+    position: fixed;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.section-indicator a {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid rgba(108,62,191,.42);
+    background: rgba(255,255,255,.55);
+    box-shadow: 0 8px 24px rgba(0,0,0,.16);
+    transition: background var(--transition-speed), transform var(--transition-speed), border-color var(--transition-speed);
+}
+.section-indicator a.active {
+    background: var(--teal);
+    border-color: var(--teal);
+    transform: scale(1.35);
+}
+
+/* Section label animation */
+.section-badge {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity .6s ease, transform .6s ease;
+}
+.section-badge.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+    :root { --section-padding-v: 64px; }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        position: absolute;
+        top: 74px;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        padding: 24px;
+        border-bottom: 1px solid rgba(27,40,69,.12);
+        box-shadow: 0 18px 46px rgba(27,40,69,.14);
+    }
+    .site-header.over-dark .nav-links { background: var(--navy); }
+    .nav-links.active { display: flex; }
+    .hamburger { display: block; }
+    .brand-title { font-size: 16px; word-spacing: .08em; }
+    .brand-mark { width: 38px; height: 38px; flex-basis: 38px; }
+    .section-indicator { display: none; }
+    .wave-divider { height: 0; display: none; }
+    .z-pattern-row,
+    .z-pattern-row:nth-child(even) {
+        flex-direction: column;
+        gap: 24px;
+        margin: 36px 0;
+    }
+    .z-text, .z-visual { width: 100%; }
+    .masonry-card:nth-child(even),
+    .masonry-card:nth-child(even):hover { transform: none; }
+    .step-tab-list {
+        display: block;
+        margin-bottom: 0;
+    }
+    .step-tab {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .step-panel {
+        display: none;
+        padding: 22px;
+        margin-bottom: 14px;
+    }
+    .step-panel.active { display: block; }
+    .pricing-card-grid,
+    .product-visual-grid,
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+    .hero-cta-row,
+    .saas-cta-group { flex-direction: column; }
+    .btn, .btn-outline, .saas-btn-primary, .saas-btn-secondary { width: 100%; }
+    .meta-bar { flex-wrap: wrap; gap: 8px 12px; }
+}
+
+@media (max-width: 560px) {
+    body { font-size: 16px; }
+    h1 { font-size: 40px; }
+    .container,
+    .container-wide,
+    .nav-container,
+    .hero-article > * { padding-left: 18px; padding-right: 18px; }
+    .quick-answer,
+    .toc-card,
+    .z-visual,
+    .step-panel,
+    .pricing-card,
+    .saas-dashboard { border-radius: 20px; padding: 22px; }
+    .extra-image-card { border-radius: 20px; padding: 10px; }
+    .extra-image-card img { border-radius: 14px; }
+    .hero-chip-row span { font-size: 12px; }
+}
+
+</style>
+</head>
+<body>
+<div aria-label="Section progress" class="section-indicator">
+<a aria-label="Hero" data-target="hero" href="#hero"></a>
+<a aria-label="Overview" data-target="overview" href="#overview"></a>
+<a aria-label="Batch code" data-target="batch-method" href="#batch-method"></a>
+<a aria-label="Recommendation" data-target="recommendation" href="#recommendation"></a>
+<a aria-label="FAQ" data-target="faq" href="#faq"></a>
+</div>
+
+<header class="site-header">
+<div class="nav-container">
+<a aria-label="CMD Folder Lock Guide home" class="brand" href="#hero">
+<span aria-hidden="true" class="brand-mark">
+<svg focusable="false" role="img" viewbox="0 0 64 64">
+<defs>
+<lineargradient id="brandShieldGradient" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#00C9A7"></stop>
+<stop offset="100%" stop-color="#6C3EBF"></stop>
+</lineargradient>
+</defs>
+<path d="M32 5 53 13v15c0 14.4-8.4 25.5-21 31C19.4 53.5 11 42.4 11 28V13l21-8Z" fill="url(#brandShieldGradient)"></path>
+<path d="M20 27h24v17H20V27Zm5-1v-4c0-4.3 3.1-7.5 7-7.5s7 3.2 7 7.5v4h-5v-4c0-1.6-.9-2.7-2-2.7s-2 1.1-2 2.7v4h-5Z" fill="#ffffff" opacity=".94"></path>
+<circle cx="32" cy="35" fill="#1B2845" r="2.5"></circle>
+<path d="M31 37h2v5h-2z" fill="#1B2845"></path>
+</svg>
+</span>
+<span class="brand-title">CMD Folder Lock Guide</span></a>
+<button aria-label="Toggle menu" class="hamburger">☰</button>
+<nav class="nav-links">
+<a href="#overview">Overview</a>
+<a href="#batch-method">Batch Code</a>
+<a href="#limitations">Security Limits</a>
+<a href="#comparison">Comparison</a>
+<a href="#faq">FAQ</a>
+<a class="btn-outline" href="#recommendation" style="padding: 6px 16px;">See Our Top Pick →</a>
+</nav>
+</div>
+</header>
+<main>
+<!-- S1: HERO -->
+<article class="hero-article container section-block theme-dark section-hero" id="hero">
+<div class="breadcrumb">Home › Folder Security › Command Line Methods</div>
+<div class="hero-eyebrow">THE COMPLETE GUIDE TO CMD FOLDER LOCKING</div><h1>How to Lock a Folder Using CMD in Windows (Batch File Method)</h1>
+<p style="font-size: 1.15rem; color: var(--color-meta-text); max-width: 680px;">
+                Looking for a quick, native way to restrict access to your sensitive files without downloading third-party software? Using a simple batch script in the <a href="https://blog.gitguardian.com/secrets-at-the-command-line/" rel="noopener noreferrer" target="_blank">Command Prompt</a> (CMD) allows you to hide and lock a folder with a password.
+            </p>
+<div aria-label="Primary actions" class="hero-cta-row">
+<a class="btn btn-primary-pill" href="#batch-method">Batch Script Code</a>
+<a class="btn btn-secondary-pill" href="#recommendation">See Our Top Pick →</a>
+</div>
+<div aria-label="Folder locking benefits" class="hero-chip-row">
+<span>Native Windows tools</span>
+<span>Password prompt</span>
+<span>Batch file method</span>
+<span>Not true encryption</span>
+</div>
+<figure class="extra-image-card hero-visual">
+<img alt="security shield protecting locked Windows folders and sensitive files" decoding="async" loading="lazy" src="https://i.ibb.co/bjywWFhL/security-shield-protecting.jpg"/>
+</figure>
+
+
+<div class="meta-bar">
+<span><strong>Editorial Team</strong></span>
+<span>·</span>
+<span>Updated recently</span>
+<span>·</span>
+<span>8 min read</span>
+</div>
+<!-- S3: QUICK ANSWER -->
+<div class="quick-answer">
+<span class="label-badge">Quick Answer</span>
+<p style="margin:0;">To lock a folder using CMD, you create a batch file (.bat) using Notepad. This script prompts the user for a password, and if correct, it reveals a hidden system folder. When locked, it uses the <code>attrib +h +s</code> command to hide the folder from standard Windows Explorer views. <strong>Note:</strong> This method deters casual snooping but is not true encryption.</p>
+</div>
+<!-- S2: TABLE OF CONTENTS -->
+<div class="toc-card">
+<h3>Guide Contents</h3>
+<ul class="toc-list">
+<li><a href="#requirements">What You Need Before Starting</a></li>
+<li><a href="#batch-method">Batch File Folder Lock — Complete Code</a></li>
+<li><a href="#how-it-works">How the CMD Folder Lock Actually Works</a></li>
+<li><a href="#limitations">CMD vs Software Folder Lock — Which Is Better?</a></li>
+<li><a href="#recommendation">The Tool We Recommend for Most Users</a></li>
+<li><a href="#troubleshooting">Troubleshooting &amp; Forgotten Passwords</a></li>
+<li><a href="#faq">Frequently Asked Questions</a></li>
+</ul>
+</div>
+</article>
+<div aria-hidden="true" class="wave-divider wave-lavender">
+<svg focusable="false" preserveaspectratio="none" viewbox="0 0 1440 90">
+<path d="M0,42 C180,84 360,0 540,42 C720,84 900,0 1080,42 C1260,84 1350,28 1440,42 L1440,90 L0,90 Z"></path>
+</svg>
+</div>
+
+<!-- S4: OVERVIEW & LAYERED Z-PATTERN (Seed A applied to first content sections) -->
+<section class="section-block theme-light section-lavender section-why" id="overview">
+<div class="container">
+<div class="z-pattern-row">
+<div class="z-text">
+<span class="label-badge section-badge">The Basics</span>
+<h2>Why Lock a Folder Using CMD?</h2>
+<p>When you share a PC at home or in a small office, you don't always need <a href="https://proprivacy.com/guides/encrypt-files-windows" rel="noopener noreferrer" target="_blank">military-grade encryption</a> just to keep tax documents or personal photos out of sight. The CMD folder lock method uses built-in Windows tools to create a <a href="https://www.avast.com/c-password-protect-file-folder-windows" rel="noopener noreferrer" target="_blank">password-protected</a> gateway.</p>
+<p>It is entirely free, requires no admin installations, and executes instantly. However, understanding exactly <em>how</em> it hides your files is critical so you don't accidentally lose data.</p>
+</div>
+<div class="z-visual">
+<figure class="extra-image-card img-shared-pc">
+<img alt="shared PC security concept for protecting private folders on Windows" decoding="async" loading="lazy" src="https://i.ibb.co/Mxs0DnLD/Shared-PC-Security.jpg"/>
+</figure>
+
+<h3 style="margin-top:0;">What is a batch file?</h3>
+<p>A batch file (ending in <code>.bat</code>) is simply a text file containing a series of commands that the Windows Command Prompt executes sequentially. Instead of typing commands one by one to hide a folder, the script automates the process and adds a password prompt.</p>
+</div>
+</div>
+<div class="z-pattern-row" id="requirements">
+<div class="z-text">
+<span class="label-badge section-badge">Preparation</span>
+<h2>What You Need Before Starting</h2>
+<ul style="margin-left: 20px;">
+<li>A Windows PC (Works on Windows 7, 10, and Windows 11).</li>
+<li>Notepad (built into Windows).</li>
+<li>A folder containing the files you want to lock.</li>
+<li>Basic understanding that this method <strong>hides</strong> files rather than encrypting them.</li>
+</ul>
+</div>
+<div class="z-visual" style="background: #fff; border-color: var(--color-border);">
+<div class="callout-warning" style="padding: 20px; border-radius: 8px; border-left: 4px solid #d32f2f;">
+<strong>Data Safety Warning:</strong> Do not use this method for highly sensitive corporate data or regulatory compliance. Anyone with moderate CMD knowledge can bypass it.
+                        </div>
+
+<figure class="extra-image-card img-vault">
+<img alt="data protection vault illustrating safer storage for sensitive files" decoding="async" loading="lazy" src="https://i.ibb.co/bMzYGK6K/Data-Protection-Vault.jpg"/>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<div aria-hidden="true" class="wave-divider wave-white">
+<svg focusable="false" preserveaspectratio="none" viewbox="0 0 1440 90">
+<path d="M0,42 C180,84 360,0 540,42 C720,84 900,0 1080,42 C1260,84 1350,28 1440,42 L1440,90 L0,90 Z"></path>
+</svg>
+</div>
+
+<!-- S5: CODE BLOCK & TUTORIAL -->
+<section class="section-block theme-light section-white section-steps" id="batch-method">
+<div class="container">
+<span class="label-badge section-badge">Step-by-Step</span>
+<h2>Batch File <a href="https://newsoftwares.net/" rel="noopener noreferrer" target="_blank">Folder Lock</a> — Complete Code</h2>
+<p>Follow these exact steps to create your folder lock notepad code.</p>
+<figure class="extra-image-card img-explorer wide-image">
+<img alt="Windows File Explorer showing files prepared for folder locking" decoding="async" loading="lazy" src="https://i.ibb.co/35v0S8cp/Windows-file-explorer.jpg"/>
+</figure>
+
+<div class="step-tabs-shell" data-stepper="folder-lock"><div aria-label="Folder lock steps" class="step-tab-list" role="tablist"><button aria-controls="step-panel-1" aria-selected="true" class="step-tab active" data-step="1" id="step-tab-1" role="tab" type="button">Step 1: Create the batch file</button><button aria-controls="step-panel-2" aria-selected="false" class="step-tab" data-step="2" id="step-tab-2" role="tab" type="button">Step 2: Set your password</button><button aria-controls="step-panel-3" aria-selected="false" class="step-tab" data-step="3" id="step-tab-3" role="tab" type="button">Step 3: Save as a .bat file</button><button aria-controls="step-panel-4" aria-selected="false" class="step-tab" data-step="4" id="step-tab-4" role="tab" type="button">Step 4: Execute the CMD folder lock</button><button aria-controls="step-panel-5" aria-selected="false" class="step-tab" data-step="5" id="step-tab-5" role="tab" type="button">Step 5: How to unlock a CMD-locked folder</button></div><div class="step-panels"><div aria-labelledby="step-tab-1" class="step-panel active" data-step-panel="1" id="step-panel-1" role="tabpanel"><h3>Step 1: Create the batch file</h3>
+<ol>
+<li>Open <strong>Notepad</strong> on your Windows computer.</li>
+<li>Copy and paste the exact code from the block below.</li>
+</ol>
+<div class="code-container">
+<div class="code-header">
+<span class="code-lang">locker.bat</span>
+<button class="copy-btn" onclick="copyCode(this)">Copy Code</button>
+</div>
+<pre id="cmd-script">
+cls
+@ECHO OFF
+title Folder Locker
+if EXIST "Control Panel.{21EC2020-3AEA-1069-A2DD-08002B30309D}" goto UNLOCK
+if NOT EXIST Private goto MDLOCKER
+:CONFIRM
+echo Are you sure you want to lock the folder? (Y/N)
+set/p "cho=&gt;"
+if %cho%==Y goto LOCK
+if %cho%==y goto LOCK
+if %cho%==n goto END
+if %cho%==N goto END
+echo Invalid choice.
+goto CONFIRM
+:LOCK
+ren Private "Control Panel.{21EC2020-3AEA-1069-A2DD-08002B30309D}"
+attrib +h +s "Control Panel.{21EC2020-3AEA-1069-A2DD-08002B30309D}"
+echo Folder locked
+goto End
+:UNLOCK
+echo Enter password to unlock folder
+set/p "pass=&gt;"
+if NOT %pass%== YOUR_PASSWORD_HERE goto FAIL
+attrib -h -s "Control Panel.{21EC2020-3AEA-1069-A2DD-08002B30309D}"
+ren "Control Panel.{21EC2020-3AEA-1069-A2DD-08002B30309D}" Private
+echo Folder Unlocked successfully
+goto End
+:FAIL
+echo Invalid password
+goto end
+:MDLOCKER
+md Private
+echo Private created successfully
+goto End
+:End
+</pre>
+</div>
+<figure class="extra-image-card img-keyboard wide-image">
+<img alt="computer keyboard for typing CMD folder lock batch file commands" decoding="async" loading="lazy" src="https://i.ibb.co/vpWzKVd/computer-keyboard.jpg"/>
+</figure>
+
+</div><div aria-labelledby="step-tab-2" class="step-panel" data-step-panel="2" id="step-panel-2" role="tabpanel"><h3>Step 2: Set your password</h3>
+<p>In the code you just pasted, locate this specific line (about halfway down):</p>
+<p><code>if NOT %pass%== YOUR_PASSWORD_HERE goto FAIL</code></p>
+<figure class="extra-image-card img-password">
+<img alt="password lock interface for securing a private folder" decoding="async" loading="lazy" src="https://i.ibb.co/LzzGGSL3/Password-Lock.jpg"/>
+</figure>
+
+<p>Delete <code>YOUR_PASSWORD_HERE</code> and replace it with your chosen password. Leave the space before and after the password intact.</p>
+</div><div aria-labelledby="step-tab-3" class="step-panel" data-step-panel="3" id="step-panel-3" role="tabpanel"><h3>Step 3: Save as a .bat file</h3>
+<ol>
+<li>In Notepad, click <strong>File</strong> &gt; <strong>Save As</strong>.</li>
+<li>Change "Save as type" to <strong>All Files (*.*)</strong>.</li>
+<li>Name the file <strong>locker.bat</strong> (or anything ending in .bat).</li>
+<li>Save it in the directory where you want your secure folder to live.</li>
+</ol>
+</div><div aria-labelledby="step-tab-4" class="step-panel" data-step-panel="4" id="step-panel-4" role="tabpanel"><h3>Step 4: Execute the CMD folder lock</h3>
+<p>Double-click your new <code>locker.bat</code> file. A new folder named <strong>Private</strong> will automatically appear. Move the files you want to lock files on PC into this "Private" folder.</p>
+<p>Double-click <code>locker.bat</code> again. A black CMD window will ask if you are sure you want to lock the folder. Type <code>Y</code> and press Enter. The "Private" folder will vanish.</p>
+</div><div aria-labelledby="step-tab-5" class="step-panel" data-step-panel="5" id="step-panel-5" role="tabpanel"><h3>Step 5: How to unlock a CMD-locked folder</h3>
+<p>To access your files again, double-click the <code>locker.bat</code> script. The terminal will prompt you for your password. Type the password you set in Step 2 and press Enter. The folder will reappear.</p>
+</div></div></div></div>
+</section>
+<div aria-hidden="true" class="wave-divider wave-mint">
+<svg focusable="false" preserveaspectratio="none" viewbox="0 0 1440 90">
+<path d="M0,42 C180,84 360,0 540,42 C720,84 900,0 1080,42 C1260,84 1350,28 1440,42 L1440,90 L0,90 Z"></path>
+</svg>
+</div>
+
+<!-- HOW IT WORKS & LIMITATIONS -->
+<section class="section-block theme-light section-mint section-deepdive" id="how-it-works">
+<div class="container">
+<span class="label-badge section-badge">Technical Deep Dive</span>
+<h2>How CMD Folder Lock Hides Folders</h2>
+<div class="masonry-features">
+<div class="masonry-card">
+<h3>The 'attrib' command</h3>
+<p>The code uses <code>attrib +h +s</code>. The <code>+h</code> makes the folder hidden, and <code>+s</code> marks it as a system file. Windows Explorer hides system files by default, which is why the folder disappears from view.</p>
+<figure class="extra-image-card img-virtual-drive wide-image">
+<img alt="secure virtual drive used for stronger file protection than hidden folders" decoding="async" loading="lazy" src="https://i.ibb.co/q3LHT6Kb/Secure-Virtual-Drive.jpg"/>
+</figure>
+
+</div>
+<div class="masonry-card">
+<h3>The CLSID Extension</h3>
+<p>The script temporarily renames your folder to <code>Control Panel.{21EC...}</code>. This specific string is a Windows Class ID (CLSID). Even if someone unhides the folder, clicking it redirects them to the Control Panel instead of opening the folder.</p>
+</div>
+<div class="masonry-card">
+<h3>Plain text vulnerability</h3>
+<p>Because the batch file is a simple text document, anyone can right-click <code>locker.bat</code>, select "Edit", and read your password in plain text. It offers privacy against casual users, but zero security against technical users.</p>
+</div>
+</div>
+<div class="callout" id="limitations">
+<h3>Folder Lock vs <a href="https://psbios.com/file-encryption-explained/" rel="noopener noreferrer" target="_blank">File Encryption</a> — Key Differences</h3>
+<p>Locking a folder with CMD only alters its visibility attributes. The actual files inside remain unencrypted on your hard drive. If a user boots the PC from a Linux <a href="https://windowsreport.com/encrypt-usb-flash-drive-windows/" rel="noopener noreferrer" target="_blank">USB drive</a>, or simply uses the "Show hidden operating system files" setting, they can bypass the lock completely. True encryption (like AES-256) scrambles the actual 1s and 0s of the files so they cannot be read without the key, regardless of the operating system.</p>
+<figure class="extra-image-card img-shield-monitor">
+<img alt="shielded computer monitor representing encrypted folder security" decoding="async" loading="lazy" src="https://i.ibb.co/Fbk2d84w/Shielded-Monitor.jpg"/>
+</figure>
+
+</div>
+</div>
+</section>
+<div aria-hidden="true" class="wave-divider wave-navy">
+<svg focusable="false" preserveaspectratio="none" viewbox="0 0 1440 90">
+<path d="M0,42 C180,84 360,0 540,42 C720,84 900,0 1080,42 C1260,84 1350,28 1440,42 L1440,90 L0,90 Z"></path>
+</svg>
+</div>
+
+<!-- S8: PREMIUM SAAS MOMENT (Recommendation) -->
+<section class="section-block theme-dark section-navy section-pricing" id="recommendation">
+<div class="container-wide">
+<span class="label-badge section-badge" style="background: rgba(255,255,255,0.1); color: #fff;">Editorial Pick</span>
+<h2>The Tool We Recommend for Most Users</h2>
+<p>Of all the manual methods we cover, the CMD batch script is the most vulnerable. If you need genuine security, on-the-fly AES-256 encryption, and protection against unauthorized access, here is why we recommend Folder Lock.</p>
+<p style="color: #aeb5b1; max-width: 600px; margin: 0 auto 32px; font-size: 18px;">Unlike a local script that limits your files to a single hard drive, this dedicated software creates a comprehensive security ecosystem. You can build encrypted vaults that automatically synchronize across your Windows PC, Mac, and mobile devices, complete with secure <a href="https://elearningindustry.com/how-to-secure-elearning-cloud-storage-and-data-in-transit" rel="noopener noreferrer" target="_blank">cloud backup</a> options.</p>
+<div class="saas-dashboard">
+<div class="saas-chip">AES-256 Encryption</div>
+<div class="saas-chip">Multi-Device Sync</div>
+<div class="saas-chip">Cloud Backup Ready</div>
+<div class="saas-chip">Protects USB Drives</div>
+</div><div class="product-visual-grid">
+<figure class="extra-image-card product-boxshot compact-product">
+<img alt="Folder Lock 10 product box for Windows file security" decoding="async" loading="lazy" src="https://i.ibb.co/Psv235rk/folder-lock-10-pro-boxshot-160x220.png"/>
+</figure>
+
+<figure class="extra-image-card product-screenshot">
+<img alt="Folder Lock 10 lockers screen showing protected file vaults" decoding="async" loading="lazy" src="https://i.ibb.co/RGXFx5r3/folder-lock-10-screenshot-main-lockers.png"/>
+</figure>
+</div>
+
+<div aria-label="Pricing options" class="pricing-toggle-panel">
+<div aria-label="Billing period" class="billing-toggle" role="group">
+<button class="billing-option active" data-billing="monthly" type="button">Monthly</button>
+<button class="billing-option" data-billing="annual" type="button">Annual</button>
+</div>
+<div class="pricing-card-grid">
+<article class="pricing-card">
+<span class="pricing-label">Free trial</span>
+<strong class="pricing-value" data-annual="$0" data-monthly="$0">$0</strong>
+<span class="pricing-note">Try Folder Lock Free →</span>
+</article>
+<article class="pricing-card recommended">
+<span class="pricing-label">Full version</span>
+<strong class="pricing-value" data-annual="$79/yr" data-monthly="$9.99/mo">$9.99/mo</strong>
+<span class="pricing-note">View Full Version Pricing</span>
+</article>
+</div>
+</div>
+<div class="saas-cta-group">
+<a class="saas-btn-primary" href="http://www.newsoftwares.net/download/folderlock7-en/folder-lock-en.exe" rel="noopener noreferrer" target="_blank">Try Folder Lock Free →</a>
+<a class="saas-btn-secondary" href="https://store.newsoftwares.net/?add=fl10" rel="noopener noreferrer" target="_blank">View Full Version Pricing</a>
+</div>
+</div>
+</section>
+<div aria-hidden="true" class="wave-divider wave-cream">
+<svg focusable="false" preserveaspectratio="none" viewbox="0 0 1440 90">
+<path d="M0,42 C180,84 360,0 540,42 C720,84 900,0 1080,42 C1260,84 1350,28 1440,42 L1440,90 L0,90 Z"></path>
+</svg>
+</div>
+
+<!-- COMPARISON TABLE -->
+<section class="section-block theme-light section-cream section-comparison" id="comparison">
+<div class="container">
+<span class="label-badge section-badge">Analysis</span>
+<h2>CMD vs Software Folder Lock — Which Is Better?</h2>
+<p>To help you decide between creating a folder lock using CMD or using dedicated software, see how they compare across critical security metrics.</p>
+<figure class="extra-image-card img-comparison wide-image">
+<img alt="disk encryption software comparison for Windows file security" decoding="async" loading="lazy" src="https://i.ibb.co/TB97SChY/best-disk-encryption-software.jpg"/>
+</figure>
+
+<div class="comp-table-wrapper">
+<table class="comp-table">
+<thead>
+<tr>
+<th>Method</th>
+<th>Setup Difficulty</th>
+<th>Security Level</th>
+<th>Cost</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CMD Batch File Lock</strong></td>
+<td>Medium (Requires code pasting)</td>
+<td>Very Low (Easily bypassed)</td>
+<td>Free</td>
+<td>Hiding files from kids/casual users</td>
+</tr>
+<tr>
+<td><strong><a href="https://proprivacy.com/guides/encrypt-files-windows" rel="noopener noreferrer" target="_blank">Windows BitLocker</a></strong></td>
+<td>Hard (Requires Pro/Enterprise)</td>
+<td>High (Full drive encryption)</td>
+<td>Included in Pro</td>
+<td>Encrypting entire hard drives</td>
+</tr>
+<tr class="highlight-row">
+<td><strong>Folder Lock (Software)</strong></td>
+<td>Very Easy (1-click interface)</td>
+<td>High (AES-256)</td>
+<td>Free trial / Paid</td>
+<td>Complete file security with cloud syncing across all desktop and mobile devices</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<div aria-hidden="true" class="wave-divider wave-white">
+<svg focusable="false" preserveaspectratio="none" viewbox="0 0 1440 90">
+<path d="M0,42 C180,84 360,0 540,42 C720,84 900,0 1080,42 C1260,84 1350,28 1440,42 L1440,90 L0,90 Z"></path>
+</svg>
+</div>
+
+<!-- TROUBLESHOOTING -->
+<section class="section-block theme-light section-white section-troubleshooting" id="troubleshooting">
+<div class="container">
+<span class="label-badge section-badge">Help &amp; Recovery</span>
+<h2>Troubleshooting &amp; Recovering from a Forgotten Password</h2>
+<figure class="extra-image-card img-unlock wide-image">
+<img alt="unlocking protected data after entering folder lock credentials" decoding="async" loading="lazy" src="https://i.ibb.co/gLVNxgq4/Accessing-Data-Unlocking.jpg"/>
+</figure>
+
+<h3>How to unlock folder lock 7 without password? (CMD Script Recovery)</h3>
+<p>If you used the batch script method outlined above and forgot your password, recovery is extremely simple because the CMD lock is not secure:</p>
+<ol>
+<li>Right-click your <code>locker.bat</code> file.</li>
+<li>Select <strong>Edit</strong> (or "Open with Notepad").</li>
+<li>Scroll down to the line: <code>if NOT %pass%== YOUR_PASSWORD_HERE goto FAIL</code></li>
+<li>Your forgotten password is listed right there in plain text.</li>
+</ol>
+<h3>How to access folder in CMD if the batch file is deleted?</h3>
+<p>If someone accidentally deleted your <code>locker.bat</code> file, your "Private" folder is still there, just hidden and disguised as a Control Panel link. To retrieve it:</p>
+<ol>
+<li>Open the Command Prompt (Press Windows Key, type <code>cmd</code>, press Enter).</li>
+<li>Navigate to the directory where your folder was located using the <code>cd</code> command (e.g., <code>cd C:\Users\Name\Desktop</code>).</li>
+<li>Type the following command exactly to unhide the folder: <br/><code>attrib -h -s "Control Panel.{21EC2020-3AEA-1069-A2DD-08002B30309D}"</code></li>
+<li>Rename the folder back to normal: <br/><code>ren "Control Panel.{21EC2020-3AEA-1069-A2DD-08002B30309D}" Private</code></li>
+</ol>
+<div class="callout callout-warning">
+<strong>Note on Software Recovery:</strong> If you are trying to recover a forgotten password for a third-party application like Folder Lock, you cannot use CMD to bypass it. You must use the software's official serial number recovery tool or master key option provided during purchase. AES encryption cannot be bypassed via terminal.
+                </div>
+</div>
+</section>
+<div aria-hidden="true" class="wave-divider wave-white">
+<svg focusable="false" preserveaspectratio="none" viewbox="0 0 1440 90">
+<path d="M0,42 C180,84 360,0 540,42 C720,84 900,0 1080,42 C1260,84 1350,28 1440,42 L1440,90 L0,90 Z"></path>
+</svg>
+</div>
+
+<!-- FAQ -->
+<section class="section-block theme-light section-white section-faq" id="faq">
+<div class="container">
+<span class="label-badge section-badge">Common Questions</span>
+<h2>Frequently Asked Questions</h2>
+<figure class="extra-image-card img-faq">
+<img alt="sensitive personal data protected by a digital lock" decoding="async" loading="lazy" src="https://i.ibb.co/Zpt5NfpT/sensitive-personal-data.jpg"/>
+</figure>
+
+<div class="faq-group">
+<h3>Basic Usage</h3>
+<div class="accordion-item">
+<button aria-expanded="false" class="accordion-btn">
+                            How do I lock a folder using CMD in Windows?
+                            <span>+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-inner">
+                                You lock a folder by creating a .bat file with a script that changes the folder's attributes to hidden and system (attrib +h +s), and renames it to a Control Panel CLSID. When run, it prompts for a password before reversing these attributes.
+                            </div>
+</div>
+</div>
+<div class="accordion-item">
+<button aria-expanded="false" class="accordion-btn">
+                            Does CMD folder locking work on Windows 11?
+                            <span>+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-inner">
+                                Yes, the windows 11 folder lock batch script is identical to the one used for Windows 10 and Windows 7. The underlying command-line architecture for hiding and renaming folders remains unchanged.
+                            </div>
+</div>
+</div>
+</div>
+<div class="faq-group">
+<h3>Security &amp; Bypassing</h3>
+<div class="accordion-item">
+<button aria-expanded="false" class="accordion-btn">
+                            Is locking a folder with CMD safe?
+                            <span>+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-inner">
+                                It is safe from accidental viewing, but it is not secure against intentional snooping. Because the password is stored in plain text within the batch file, anyone can right-click the file, hit edit, and read your password.
+                            </div>
+</div>
+</div>
+<div class="accordion-item">
+<button aria-expanded="false" class="accordion-btn">
+                            Can someone bypass a CMD folder lock?
+                            <span>+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-inner">
+                                Yes, very easily. They can edit the batch file to read the password, or they can open Windows Explorer options and check "Show hidden files, folders, and drives" AND uncheck "Hide protected operating system files." This reveals the folder immediately.
+                            </div>
+</div>
+</div>
+<div class="accordion-item">
+<button aria-expanded="false" class="accordion-btn">
+                            Is folder locking the same as folder encryption?
+                            <span>+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-inner">
+                                No. Hiding a folder using CMD just removes it from the graphical interface view. Encryption mathematically scrambles the file data so it is completely unreadable without the decryption key. For true security, encryption is required.
+                            </div>
+</div>
+</div>
+</div>
+<div class="faq-group">
+<h3>Command Line Navigation</h3>
+<div class="accordion-item">
+<button aria-expanded="false" class="accordion-btn">
+                            How to access a folder in cmd?
+                            <span>+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-inner">
+                                To access or open a folder within the command prompt, use the "cd" (change directory) command followed by the path. For example: <code>cd C:\Users\YourName\Documents</code>.
+                            </div>
+</div>
+</div>
+<div class="accordion-item">
+<button aria-expanded="false" class="accordion-btn">
+                            How to go back one folder in cmd?
+                            <span>+</span>
+</button>
+<div class="accordion-content">
+<div class="accordion-inner">
+                                To move up one directory level (go back), type <code>cd..</code> and press Enter.
+                            </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div aria-hidden="true" class="wave-divider wave-purple">
+<svg focusable="false" preserveaspectratio="none" viewbox="0 0 1440 90">
+<path d="M0,42 C180,84 360,0 540,42 C720,84 900,0 1080,42 C1260,84 1350,28 1440,42 L1440,90 L0,90 Z"></path>
+</svg>
+</div>
+
+<!-- S22: FINAL VERDICT / CTA -->
+<section class="section-block theme-dark section-final section-purple" id="final-cta" style="padding-bottom: 100px;">
+<div class="container text-center" style="text-align: center;">
+<span class="label-badge section-badge">The Bottom Line</span>
+<h2>Our Verdict</h2>
+<figure class="extra-image-card img-final wide-image">
+<img alt="shielded workspace for secure folder and file management" decoding="async" loading="lazy" src="https://i.ibb.co/sv39r4G5/The-Shielded-Workspace.jpg"/>
+</figure>
+
+<p style="max-width: 600px; margin: 0 auto 32px;">Learning how to lock a folder using CMD is a great technical exercise and a useful trick for hiding files from young children on a shared family PC. However, because the password is saved in plain text and the files are not encrypted, it should never be used for financial documents, private photos, or corporate data.</p>
+<p style="max-width: 600px; margin: 0 auto 32px;">Furthermore, a batch script restricts your hidden files to a single, local hard drive. For genuine peace of mind and modern convenience, we strongly recommend a dedicated application that provides AES-256 encryption, automatic cloud backups, and seamless vault synchronization across your computers and smartphones.</p>
+<div style="display: flex; gap: 16px; justify-content: center;">
+<a class="btn" href="http://www.newsoftwares.net/download/folderlock7-en/folder-lock-en.exe" rel="noopener noreferrer" target="_blank">Try Folder Lock Free →</a>
+<a class="btn-outline" href="https://store.newsoftwares.net/?add=fl10" rel="noopener noreferrer" target="_blank">Get the full version →</a>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div class="footer-grid">
+<div>
+<div class="brand footer-brand">
+<span aria-hidden="true" class="brand-mark">
+<svg focusable="false" role="img" viewbox="0 0 64 64">
+<defs>
+<lineargradient id="brandShieldGradient" x1="0" x2="1" y1="0" y2="1">
+<stop offset="0%" stop-color="#00C9A7"></stop>
+<stop offset="100%" stop-color="#6C3EBF"></stop>
+</lineargradient>
+</defs>
+<path d="M32 5 53 13v15c0 14.4-8.4 25.5-21 31C19.4 53.5 11 42.4 11 28V13l21-8Z" fill="url(#brandShieldGradient)"></path>
+<path d="M20 27h24v17H20V27Zm5-1v-4c0-4.3 3.1-7.5 7-7.5s7 3.2 7 7.5v4h-5v-4c0-1.6-.9-2.7-2-2.7s-2 1.1-2 2.7v4h-5Z" fill="#ffffff" opacity=".94"></path>
+<circle cx="32" cy="35" fill="#1B2845" r="2.5"></circle>
+<path d="M31 37h2v5h-2z" fill="#1B2845"></path>
+</svg>
+</span>
+<span class="brand-title">CMD Folder Lock Guide</span></div>
+<p style="color: #aeb5b1; font-size: 14px; max-width: 300px;">The complete technical guide to managing folder security via the Windows command line.</p>
+</div>
+<div>
+<h4>Guide Sections</h4>
+<ul class="footer-links">
+<li><a href="#batch-method">Batch Script Code</a></li>
+<li><a href="#how-it-works">How CMD Hides Files</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#faq">FAQ</a></li>
+</ul>
+</div>
+<div>
+<h4>Legal &amp; About</h4>
+<ul class="footer-links">
+<li><a href="#">Privacy Policy</a></li>
+<li><a href="#">Terms of Use</a></li>
+<li><a href="#">Contact Support</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-disclosure">
+<p>This site operates as an independent editorial resource. Some links may earn a referral commission at no cost to you. Product recommendations reflect editorial judgment and independent assessment.</p>
+<p style="margin-top: 12px;">Folder Lock is developed by <a href="https://newsoftwares.net/" rel="noopener noreferrer" style="color: #fff;" target="_blank">NewSoftwares.net</a>.</p>
+<p style="margin-top: 12px;">© 2026 CMD Folder Lock Guide. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<!-- Schema -->
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "CmdFolderLockGuide",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "How to Lock a Folder Using CMD in Windows (Batch File Method)",
+      "description": "Learn how to lock a folder using CMD in Windows. Get the exact batch file code, step-by-step terminal instructions, and troubleshooting tips."
+    }
+    </script>
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Folder Security"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Command Line Methods"
+        }
+      ]
+    }
+    </script>
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "NewSoftwares.net",
+      "description": "Publisher and developer of Folder Lock."
+    }
+    </script>
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "How to Lock a Folder Using CMD in Windows (Batch File Method)",
+      "author": {
+        "@type": "Organization",
+        "name": "CmdFolderLockGuide Editorial Team"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "CmdFolderLockGuide"
+      }
+    }
+    </script>
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to create a batch file to lock a folder",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Create the batch file",
+          "text": "Open Notepad and paste the provided locker.bat script code."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Set your password",
+          "text": "Replace YOUR_PASSWORD_HERE in the script with your desired password."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Save as .bat",
+          "text": "Save the file as locker.bat ensuring 'All Files' is selected in the save dialog."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Execute and lock",
+          "text": "Double-click locker.bat to create the Private folder, move your files in, and double-click again to hide and lock it."
+        }
+      ]
+    }
+    </script>
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I lock a folder using CMD in Windows?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You lock a folder by creating a .bat file with a script that changes the folder's attributes to hidden and system (attrib +h +s), and renames it to a Control Panel CLSID. When run, it prompts for a password before reversing these attributes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does CMD folder locking work on Windows 11?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, the windows 11 folder lock batch script is identical to the one used for Windows 10 and Windows 7. The underlying command-line architecture for hiding and renaming folders remains unchanged."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is locking a folder with CMD safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is safe from accidental viewing, but it is not secure against intentional snooping. Because the password is stored in plain text within the batch file, anyone can right-click the file, hit edit, and read your password."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can someone bypass a CMD folder lock?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, very easily. They can edit the batch file to read the password, or they can open Windows Explorer options and check 'Show hidden files, folders, and drives' AND uncheck 'Hide protected operating system files.' This reveals the folder immediately."
+          }
+        }
+      ]
+    }
+    </script>
+<!-- Scripts -->
+<script defer="">
+
+document.addEventListener('DOMContentLoaded', () => {
+    const header = document.querySelector('.site-header');
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+
+    // Mobile Menu Toggle
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
+
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (!href || href === '#') return;
+            const target = document.querySelector(href);
+            if (!target) return;
+            e.preventDefault();
+            if (navLinks && navLinks.classList.contains('active')) navLinks.classList.remove('active');
+            const headerOffset = 86;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        });
+    });
+
+    // Accordion Logic
+    const accordions = document.querySelectorAll('.accordion-btn');
+    accordions.forEach(acc => {
+        acc.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', String(!isExpanded));
+            const content = this.nextElementSibling;
+            if (!content) return;
+            if (!isExpanded) {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                const icon = this.querySelector('span');
+                if (icon) icon.textContent = '-';
+            } else {
+                content.style.maxHeight = null;
+                const icon = this.querySelector('span');
+                if (icon) icon.textContent = '+';
+            }
+        });
+    });
+
+    // Section-aware navigation and floating indicator
+    const observedSections = [...document.querySelectorAll('article.section-block, section.section-block')];
+    const navAnchors = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+    const dotAnchors = [...document.querySelectorAll('.section-indicator a')];
+
+    const setActiveSection = (id, isDark) => {
+        if (header) header.classList.toggle('over-dark', Boolean(isDark));
+        navAnchors.forEach(a => {
+            const href = a.getAttribute('href') || '';
+            a.classList.toggle('active', href === '#' + id);
+        });
+
+        let activeDot = dotAnchors.find(dot => dot.dataset.target === id);
+        if (!activeDot) {
+            if (['comparison','troubleshooting'].includes(id)) activeDot = dotAnchors.find(dot => dot.dataset.target === 'recommendation');
+            if (['final-cta'].includes(id)) activeDot = dotAnchors.find(dot => dot.dataset.target === 'faq');
+        }
+        dotAnchors.forEach(dot => dot.classList.toggle('active', dot === activeDot));
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+        const visible = entries
+            .filter(entry => entry.isIntersecting)
+            .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        const section = visible.target;
+        setActiveSection(section.id, section.classList.contains('theme-dark'));
+    }, { root: null, rootMargin: '-30% 0px -55% 0px', threshold: [0.08, 0.2, 0.45, 0.7] });
+
+    observedSections.forEach(section => sectionObserver.observe(section));
+
+    // Section label fade-in
+    const badges = document.querySelectorAll('.section-badge');
+    const badgeObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { root: null, rootMargin: '0px', threshold: 0.1 });
+    badges.forEach(badge => badgeObserver.observe(badge));
+
+    // Interactive step tabs / mobile accordion behavior
+    document.querySelectorAll('.step-tabs-shell').forEach(shell => {
+        const tabs = [...shell.querySelectorAll('.step-tab')];
+        const panels = [...shell.querySelectorAll('.step-panel')];
+
+        const activateStep = (step) => {
+            tabs.forEach(tab => {
+                const active = tab.dataset.step === step;
+                tab.classList.toggle('active', active);
+                tab.setAttribute('aria-selected', String(active));
+            });
+            panels.forEach(panel => {
+                panel.classList.toggle('active', panel.dataset.stepPanel === step);
+            });
+        };
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => activateStep(tab.dataset.step));
+        });
+    });
+
+    // Pricing monthly/annual toggle
+    document.querySelectorAll('.pricing-toggle-panel').forEach(panel => {
+        const buttons = [...panel.querySelectorAll('.billing-option')];
+        const values = [...panel.querySelectorAll('.pricing-value')];
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const billing = button.dataset.billing || 'monthly';
+                buttons.forEach(btn => btn.classList.toggle('active', btn === button));
+                values.forEach(value => {
+                    const nextValue = value.dataset[billing];
+                    if (nextValue) value.textContent = nextValue;
+                });
+            });
+        });
+    });
+});
+
+// Copy Code Functionality
+function copyCode(button) {
+    const codeBlock = document.getElementById('cmd-script');
+    if (!codeBlock) return;
+    const textToCopy = codeBlock.innerText;
+
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalText = button.innerText;
+        button.innerText = 'Copied!';
+        button.style.backgroundColor = 'rgba(0,201,167,.28)';
+        setTimeout(() => {
+            button.innerText = originalText;
+            button.style.backgroundColor = '';
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+}
+
+</script>
+</body>
+</html>
