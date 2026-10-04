@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://how-to-lock-a-folder-using-cmd-in-windows-batch-file-method.vercel.app/sitemap.xml
